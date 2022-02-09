@@ -1,0 +1,61 @@
+version: '3'
+services:
+  api:
+    build: .
+    ports:
+      - "8080:8080"
+    container_name: api
+    depends_on:
+      - mysql
+    volumes:
+      - ./api:/go/src/github.com/gouser/money-boy/api
+    environment:
+      - MYSQL_USER: admin
+      - MYSQL_PASSWORD: admin
+      - MYSQL_DATABASE: money-boys
+
+  frontend:
+    build:
+      context: .
+      dockerfile: "./Dockerfile-nodejs"
+    volumes:
+      - ./frontend:/frontend
+    command: >
+      sh -c "cd frontend && yarn start"
+    ports:
+      - "3000:3000"
+    container_name: frontend
+    depends_on:
+      - app
+      - api
+    stdin_open: true
+
+  mysql:
+    image: mysql:5.7.22
+    environment:
+      - MYSQL_ROOT: admin
+      - MYSQL_USER: admin
+      - MYSQL_PASSWORD: admin
+      - MYSQL_DATABASE: money-boys
+    ports:
+      - "3306:3306"
+    container_name: mysql
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./mysql/sql:docker-entrypoint-initdb.d
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+      - PMA_USER=admin
+      - PMA_PASSWORD=admin
+    links:
+      - mysql
+    ports:
+      - "8888:80"
+    volumes:
+      - /sessions
+    container_name: phpmyadmin
