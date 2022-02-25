@@ -1,15 +1,12 @@
 package products
 
 import (
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 
-	"Gintuto/domain/products"
+	"Gintuto/api/domain/products"
+	"Gintuto/api/utils/errors"
 )
 
 func GetProduct(c *gin.Context) {
@@ -18,18 +15,11 @@ func GetProduct(c *gin.Context) {
 
 func CreateProduct(c *gin.Context) {
 	var product products.Product
-	bytes, err := ioutil.ReadAll(c.Request.Body)
-	if err != nil {
-		log.Println(err.Error())
+	if err := c.ShouldBindJSON(&product); err != nil {
+		apiErr := errors.NewBadRequestError("invalid json body")
+		c.JSON(apiErr.Status, apiErr)
 		return
 	}
 
-	if err := json.Unmarshal(bytes, &product); err != nil {
-		log.Println(err.Error())
-		return
-	}
-
-	fmt.Println(string(bytes))
-	fmt.Println(err)
-	c.JSON(http.StatusOK, product)
+	c.JSON(http.StatusCreated, product)
 }
