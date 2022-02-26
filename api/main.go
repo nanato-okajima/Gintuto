@@ -1,7 +1,7 @@
 package main
 
 import (
-	"Gintuto/app"
+	"Gintuto/api/app"
 )
 
 func main() {
