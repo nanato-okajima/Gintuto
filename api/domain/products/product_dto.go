@@ -1,20 +1,19 @@
 package products
 
 import (
-	"Gintuto/api/utils/errors"
 	"strings"
-	"time"
+
+	"github.com/jinzhu/gorm"
+
+	"Gintuto/api/utils/errors"
 )
 
 type Product struct {
-	ID        uint64 `json:"id"`
-	Name      string `json:"name"`
-	Detail    string `json:"detail"`
-	Price     uint64 `json:"price"`
-	Img       []byte `json:"img"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt time.Time
+	gorm.Model
+	Name   string `json:"name"`
+	Detail string `json:"detail"`
+	Price  uint64 `json:"price"`
+	Img    []byte `json:"img"`
 }
 
 func (p *Product) Validate() *errors.ApiErr {
