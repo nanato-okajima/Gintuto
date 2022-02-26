@@ -1,8 +1,11 @@
 package mysqlutils
 
 import (
-	"Gintuto/api/utils/errors"
 	"strings"
+
+	"github.com/go-sql-driver/mysql"
+
+	"Gintuto/api/utils/errors"
 )
 
 const (
