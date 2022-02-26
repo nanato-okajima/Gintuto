@@ -1,4 +1,4 @@
-module Gintuto
+module Gintuto/api
 
 go 1.16
 

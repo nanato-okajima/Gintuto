@@ -1,6 +1,10 @@
 package products
 
-import "time"
+import (
+	"Gintuto/api/utils/errors"
+	"strings"
+	"time"
+)
 
 type Product struct {
 	ID        uint64 `json:"id"`
@@ -11,4 +15,12 @@ type Product struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt time.Time
+}
+
+func (p *Product) Validate() *errors.ApiErr {
+	p.Name = strings.TrimSpace(strings.ToLower(p.Name))
+	if p.Name == "" {
+		return errors.NewBadRequestError("invalid product name")
+	}
+	return nil
 }

@@ -1,6 +1,6 @@
 package app
 
-import "Gintuto/controllers/products"
+import "Gintuto/api/controllers/products"
 
 func mapUrls() {
 	router.GET("/products/:product_id", products.GetProduct)
