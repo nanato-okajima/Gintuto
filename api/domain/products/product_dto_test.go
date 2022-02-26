@@ -3,11 +3,12 @@ package products
 import (
 	"testing"
 
+	"github.com/jinzhu/gorm"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestProductValidateNoError(t *testing.T) {
-	p := Product{ID: 123, Name: "hoge taro"}
+	p := Product{Model: gorm.Model{ID: 123}, Name: "hoge taro"}
 
 	err := p.Validate()
 
@@ -15,7 +16,7 @@ func TestProductValidateNoError(t *testing.T) {
 }
 
 func TestProcutValidateBadRequestError(t *testing.T) {
-	p := Product{ID: 123}
+	p := Product{Model: gorm.Model{ID: 123}}
 
 	err := p.Validate()
 

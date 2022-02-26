@@ -1,15 +1,22 @@
 package products
 
 import (
+	"Gintuto/api/datasources/mysql/products_db"
 	"Gintuto/api/utils/errors"
 	"fmt"
+	"log"
 )
 
 var (
-	productsDB = make(map[uint64]*Product)
+	productsDB = make(map[uint]*Product)
 )
 
 func (p *Product) Get() *errors.ApiErr {
+
+	if err := products_db.Client.DB().Ping(); err != nil {
+		log.Fatal(err)
+	}
+
 	result := productsDB[p.ID]
 	if result == nil {
 		return errors.NewNotFoundError(fmt.Sprintf("product %d not found", p.ID))

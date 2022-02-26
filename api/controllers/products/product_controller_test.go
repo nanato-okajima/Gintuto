@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 	"github.com/stretchr/testify/assert"
 
 	dproducts "Gintuto/api/domain/products"
@@ -32,7 +33,7 @@ func getRequestHandler(id string) (*gin.Context, *httptest.ResponseRecorder) {
 }
 
 func TestGetProductNoError(t *testing.T) {
-	p := dproducts.Product{ID: 1, Name: "hoge taro"}
+	p := dproducts.Product{Model: gorm.Model{ID: 1}, Name: "hoge taro"}
 	c, _ := postRequestHandler(p)
 	CreateProduct(c)
 
@@ -89,7 +90,7 @@ func postRequestHandler(p interface{}) (*gin.Context, *httptest.ResponseRecorder
 }
 
 func TestCreateProductNoError(t *testing.T) {
-	p := dproducts.Product{ID: 123, Name: "hoge taro"}
+	p := dproducts.Product{Model: gorm.Model{ID: 123}, Name: "hoge taro"}
 	c, res := postRequestHandler(p)
 
 	CreateProduct(c)
